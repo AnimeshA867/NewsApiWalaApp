@@ -6,9 +6,17 @@ export class News extends Component {
     return (
       <div className="container my-3">
         <h2>NewsHero- Top Headlines</h2>
-        <NewsItem title="myTitle" description="myDescription" />
-        <NewsItem />
-        <NewsItem />
+        <div className="row">
+          <div className="col-md-4">
+            <NewsItem title="myTitle" description="myDescription" />
+          </div>
+          <div className="col-md-4">
+            <NewsItem />
+          </div>
+          <div className="col-md-4">
+            <NewsItem />
+          </div>
+        </div>
       </div>
     );
   }
