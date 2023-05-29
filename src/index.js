@@ -2,13 +2,32 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import News from "./components/News";
 import reportWebVitals from "./reportWebVitals";
+import {
+  Outlet,
+  Link,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 // import bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { path: "", element: <News /> },
+      { path: "science", element: <News search="science" key={"science"} /> },
+      { path: "sports", element: <News search="sports" key={"sports"} /> },
+      { path: "movies", element: <News search="movies" key={"movies"} /> },
+    ],
+  },
+]);
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

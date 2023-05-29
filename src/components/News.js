@@ -1,7 +1,20 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Spinner from "./Spinner";
+import PropTypes from "prop-types";
 
 export class News extends Component {
+  nav = document.getElementById("navigation");
+  static defaultProps = {
+    country: "Np",
+    search: "tesla",
+  };
+  static propTypes = {
+    country: PropTypes.string,
+    search: PropTypes.string,
+    category: PropTypes.string,
+  };
+
   articles1 = [
     {
       source: { id: "bbc-sport", name: "BBC Sport" },
@@ -45,6 +58,7 @@ export class News extends Component {
         "Last week, we at ESPNcricinfo did something we have been thinking of doing for eight years now: pretend-live ball-by-ball commentary for a classic cricket match. We knew the result, yes, but we tried… [+6823 chars]",
     },
   ];
+
   constructor() {
     super();
 
@@ -52,79 +66,140 @@ export class News extends Component {
       articles: this.articles1,
       loading: false,
       page: 1,
+      pageSize: 3,
     };
     this.handleNextClick = this.handleNextClick.bind(this);
     this.handlePreviousClick = this.handlePreviousClick.bind(this);
   }
   async componentDidMount() {
-    let url = `https://newsapi.org/v2/everything?q=tesla&from=2023-04-27&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${this.state.page}`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    console.log(parsedData);
-    this.setState({ articles: parsedData.articles, page: this.state.page });
-    console.log(this.state.articles);
-    console.log(this.state.page);
+    this.fetchData();
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (prevProps.search !== this.props.search) {
+      this.fetchData();
+    }
+  }
+  async fetchData() {
+    try {
+      let url = `https://newsapi.org/v2/everything?q=${this.props.search}&pageSize=${this.state.pageSize}&from=2023-04-29&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${this.state.page}`;
+      this.setState({ loading: true });
+
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      console.log(parsedData);
+      this.setState({
+        articles: parsedData.articles,
+        page: this.state.page,
+        totalArticles: parsedData.totalResults,
+      });
+      console.log(this.state.articles);
+      console.log(this.state.totalArticles);
+    } finally {
+      this.setState({ loading: false });
+
+      // Set loading state to false after data is fetched
+    }
   }
   async handlePreviousClick() {
     console.log("Previous");
-    let url = `https://newsapi.org/v2/everything?q=tesla&from=2023-04-27&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${
+    let url = `https://newsapi.org/v2/everything?q=${
+      this.props.search
+    }&pageSize=${
+      this.state.pageSize
+    }&from=2023-04-29&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${
       this.state.page - 1
     }`;
+    this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(parsedData);
-    this.setState({ articles: parsedData.articles, page: this.state.page - 1 });
+    this.setState({
+      articles: parsedData.articles,
+      page: this.state.page - 1,
+      loading: false,
+    });
     console.log(this.state.articles);
   }
   async handleNextClick() {
     console.log("Next");
-    let url = `https://newsapi.org/v2/everything?q=tesla&from=2023-04-27&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${
-      this.state.page + 1
-    }`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({ page: this.state.page + 1, articles: parsedData.articles });
-    // this.setState({ articles: parsedData.articles });
-    console.log(this.state.articles);
+    if (
+      Math.floor(this.state.totalArticles / this.state.pageSize) >
+      this.state.page
+    ) {
+      let url = `https://newsapi.org/v2/everything?q=${
+        this.props.search
+      }&pageSize=${
+        this.state.pageSize
+      }&from=2023-04-29&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${
+        this.state.page + 1
+      }`;
+      this.setState({ loading: true });
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+        page: this.state.page + 1,
+        articles: parsedData.articles,
+        loading: false,
+      });
+      // this.setState({ articles: parsedData.articles });
+      console.log(this.state.articles);
+    } else {
+      let nextBtn = document.getElementById("nextBTN");
+      nextBtn.disabled = true;
+    }
   }
   render() {
-    console.log("Render");
+    console.log("This is being rendered.");
+    console.log(`  ${this.props.search}`);
     return (
-      <div className="container my-4">
-        <h2>NewsHero- Top Headlines</h2>
-        <div className="row">
-          {this.state.articles.map((element) => {
-            return (
-              <div className="col-md-3 ">
-                <NewsItem
-                  title={!element.title ? "" : element.title}
-                  description={!element.description ? "" : element.description}
-                  imgUrl={element.urlToImage}
-                  url={element.url}
-                  imgAlt={element.title}
-                />
+      <>
+        <div className="container mb-3">
+          <h2>NewsHero- Top Headlines</h2>
+
+          {
+            <div className="container d-flex justify-content-between">
+              <div className="row mx-auto">
+                {this.state.loading && <Spinner />}
+                {!this.state.loading &&
+                  this.state.articles.map((element) => {
+                    return (
+                      <div className="col-md-4 d-flex justify-content-center ">
+                        <NewsItem
+                          title={!element.title ? "" : element.title}
+                          imgUrl={element.urlToImage}
+                          url={element.url}
+                          imgAlt={element.title}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
-            );
-          })}
-        </div>
-        <div className="d-flex container justify-content-between">
-          <button
-            disabled={this.state.page <= 1}
-            type="button"
-            class="btn btn-primary"
-            onClick={this.handlePreviousClick}
+            </div>
+          }
+          <div
+            className="d-flex container justify-content-between"
+            id="navigation"
           >
-            Previous
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            onClick={this.handleNextClick}
-          >
-            Next
-          </button>
+            <button
+              disabled={this.state.page <= 1}
+              type="button"
+              class="btn btn-primary"
+              onClick={this.handlePreviousClick}
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="nextBTN"
+              onClick={this.handleNextClick}
+            >
+              Next
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -1,13 +1,19 @@
 import React, { Component } from "react";
-import bootstrap from "bootstrap";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 export class NavBar extends Component {
   render() {
+    // let search1 = document.getElementById("searchCategory");
+    let val;
+    // console.log(search1.value);
+
+    function handleSearch() {}
     return (
       <nav className="navbar-dark bg-dark navbar-expand-lg navbar">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            NewsLegend
-          </a>
+          <Link className="navbar-brand" to={`/`}>
+            NewsHero
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -22,9 +28,36 @@ export class NavBar extends Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <Link className="nav-link active" aria-current="page" to={`/ `}>
                   Home
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to={`/Science`}
+                >
+                  Science
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to={`/Movies`}
+                >
+                  Movies
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to={`/sports`}
+                >
+                  Sports
+                </Link>
               </li>
             </ul>
             <form className="d-flex" role="search">
@@ -33,8 +66,13 @@ export class NavBar extends Component {
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                id="searchCategory"
               />
-              <button className="btn btn-outline-success" type="submit">
+              <button
+                className="btn btn-outline-success"
+                type="submit"
+                onClick={handleSearch}
+              >
                 Search
               </button>
             </form>
