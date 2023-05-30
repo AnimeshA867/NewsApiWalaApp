@@ -21,7 +21,10 @@ const router = createBrowserRouter([
       { path: "", element: <News /> },
       { path: "science", element: <News search="science" key={"science"} /> },
       { path: "sports", element: <News search="sports" key={"sports"} /> },
-      { path: "movies", element: <News search="movies" key={"movies"} /> },
+      {
+        path: "entertainment",
+        element: <News search="entertainment" key={"entertainment"} />,
+      },
     ],
   },
 ]);

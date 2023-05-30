@@ -8,24 +8,22 @@ export class NewsItem extends Component {
   render() {
     let { title, imgUrl, imgAlt, url } = this.props;
     return (
-      <div className="my-3">
-        <div className="card" style={{ width: "18rem", height: "22rem" }}>
-          <img
-            src={imgUrl}
-            className="card-img-top img-fluid"
-            alt={imgAlt}
-            style={{ height: "10rem" }}
-          />
-          <div className="card-body text-center align-bottom">
-            <h5 className="card-title">{title}</h5>
-            <a
-              href={url}
-              className="btn btn-primary btn-sm align-bottom"
-              target="blank"
-            >
-              Read full article
-            </a>
-          </div>
+      <div className="card" style={{ width: "24rem" }}>
+        <img
+          src={imgUrl}
+          className="card-img-top img-fluid"
+          alt={imgAlt}
+          style={{ height: "10rem" }}
+        />
+        <div className="card-body d-flex flex-column justify-content-between align-items-center text-center">
+          <h5 className="card-title">{title}</h5>
+          <a
+            href={url}
+            className="btn btn-dark btn-sm align-bottom w-50"
+            target="blank"
+          >
+            Read full article
+          </a>
         </div>
       </div>
     );

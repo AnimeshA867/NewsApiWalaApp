@@ -45,9 +45,9 @@ export class NavBar extends Component {
                 <Link
                   className="nav-link active"
                   aria-current="page"
-                  to={`/Movies`}
+                  to={`/Entertainment`}
                 >
-                  Movies
+                  Entertainment
                 </Link>
               </li>
               <li>

@@ -6,8 +6,8 @@ import PropTypes from "prop-types";
 export class News extends Component {
   nav = document.getElementById("navigation");
   static defaultProps = {
-    country: "Np",
-    search: "tesla",
+    country: "in",
+    search: "general",
   };
   static propTypes = {
     country: PropTypes.string,
@@ -66,13 +66,14 @@ export class News extends Component {
       articles: this.articles1,
       loading: false,
       page: 1,
-      pageSize: 3,
+      pageSize: 4,
     };
     this.handleNextClick = this.handleNextClick.bind(this);
     this.handlePreviousClick = this.handlePreviousClick.bind(this);
   }
   async componentDidMount() {
     this.fetchData();
+    console.log(this.state.articles);
   }
 
   async componentDidUpdate(prevProps) {
@@ -82,7 +83,7 @@ export class News extends Component {
   }
   async fetchData() {
     try {
-      let url = `https://newsapi.org/v2/everything?q=${this.props.search}&pageSize=${this.state.pageSize}&from=2023-04-29&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${this.state.page}`;
+      let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=51d77784425046338feac36930392e1a&page=${this.state.page}&category=${this.props.search}&pageSize=${this.state.pageSize}`;
       this.setState({ loading: true });
 
       let data = await fetch(url);
@@ -103,23 +104,8 @@ export class News extends Component {
   }
   async handlePreviousClick() {
     console.log("Previous");
-    let url = `https://newsapi.org/v2/everything?q=${
-      this.props.search
-    }&pageSize=${
-      this.state.pageSize
-    }&from=2023-04-29&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${
-      this.state.page - 1
-    }`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    console.log(parsedData);
-    this.setState({
-      articles: parsedData.articles,
-      page: this.state.page - 1,
-      loading: false,
-    });
-    console.log(this.state.articles);
+    this.setState({ page: this.state.page - 1 });
+    this.fetchData();
   }
   async handleNextClick() {
     console.log("Next");
@@ -127,23 +113,8 @@ export class News extends Component {
       Math.floor(this.state.totalArticles / this.state.pageSize) >
       this.state.page
     ) {
-      let url = `https://newsapi.org/v2/everything?q=${
-        this.props.search
-      }&pageSize=${
-        this.state.pageSize
-      }&from=2023-04-29&sortBy=publishedAt&apiKey=51d77784425046338feac36930392e1a&page=${
-        this.state.page + 1
-      }`;
-      this.setState({ loading: true });
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      this.setState({
-        page: this.state.page + 1,
-        articles: parsedData.articles,
-        loading: false,
-      });
-      // this.setState({ articles: parsedData.articles });
-      console.log(this.state.articles);
+      this.setState({ page: this.state.page + 1 });
+      this.fetchData();
     } else {
       let nextBtn = document.getElementById("nextBTN");
       nextBtn.disabled = true;
@@ -154,8 +125,8 @@ export class News extends Component {
     console.log(`  ${this.props.search}`);
     return (
       <>
-        <div className="container mb-3">
-          <h2>NewsHero- Top Headlines</h2>
+        <div className="container-fluid">
+          <h2 className="mx-5">NewsHero- Top Headlines</h2>
 
           {
             <div className="container d-flex justify-content-between">
@@ -164,12 +135,12 @@ export class News extends Component {
                 {!this.state.loading &&
                   this.state.articles.map((element) => {
                     return (
-                      <div className="col-md-4 d-flex justify-content-center ">
+                      <div className="col-md-3 d-flex justify-content-evenly ">
                         <NewsItem
                           title={!element.title ? "" : element.title}
                           imgUrl={element.urlToImage}
                           url={element.url}
-                          imgAlt={element.title}
+                          imgAlt={element.description}
                         />
                       </div>
                     );
@@ -178,20 +149,20 @@ export class News extends Component {
             </div>
           }
           <div
-            className="d-flex container justify-content-between"
+            className="d-flex container justify-content-between my-4"
             id="navigation"
           >
             <button
               disabled={this.state.page <= 1}
               type="button"
-              class="btn btn-primary"
+              class="btn btn-dark"
               onClick={this.handlePreviousClick}
             >
               Previous
             </button>
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-dark"
               id="nextBTN"
               onClick={this.handleNextClick}
             >
