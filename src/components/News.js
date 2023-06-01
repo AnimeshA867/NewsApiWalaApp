@@ -23,11 +23,9 @@ export class News extends Component {
       articles: [""],
       loading: false,
       page: 1,
-      pageSize: 4,
+      pageSize: 14,
       totalArticles: 0,
     };
-    this.handleNextClick = this.handleNextClick.bind(this);
-    this.handlePreviousClick = this.handlePreviousClick.bind(this);
   }
   async componentDidMount() {
     this.fetchData(this.state.page);
@@ -44,9 +42,8 @@ export class News extends Component {
   }
   async fetchData(page) {
     try {
-      // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=39bd93a959024639b14640804c146c86&page=${page}&category=${this.props.search}&pageSize=${this.state.pageSize}`;
-      let url =
-        "https://newsapi.org/v2/everything?q=bitcoin&apiKey=39bd93a959024639b14640804c146c86";
+      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=037b4d47f210425889376c7f97f11591&page=${page}&category=${this.props.search}&pageSize=${this.state.pageSize}`;
+
       console.log(url);
       this.setState({ loading: true });
 
@@ -63,30 +60,23 @@ export class News extends Component {
       // Set loading state to false after data is fetched
     }
   }
-  async handlePreviousClick() {
-    console.log("Previous");
-    this.setState({ page: this.state.page - 1 }, () => {
-      this.fetchData(this.state.page);
+
+  fetchMoreData = async () => {
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&apiKey=037b4d47f210425889376c7f97f11591&page=${
+      this.state.page + 1
+    }&category=${this.props.search}&pageSize=${this.state.pageSize}`;
+
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    console.log(parsedData + "from fetchMoer Data");
+    this.setState({
+      articles: this.state.articles.concat(parsedData.articles),
+
+      page: this.state.page + 1,
     });
-  }
-  async handleNextClick() {
-    console.log("Next");
-    if (
-      Math.floor(this.state.totalArticles / this.state.pageSize) >
-      this.state.page
-    ) {
-      console.log(this.state.page);
-      this.setState({ page: this.state.page + 1 }, () => {
-        this.fetchData(this.state.page);
-      });
-    } else {
-      let nextBtn = document.getElementById("nextBTN");
-      nextBtn.disabled = true;
-    }
-  }
-  fetchMoreData = () => {
-    this.setState({ page: this.state.page + 1 });
-    this.fetchData();
+    console.log(this.state.articles.length);
   };
   render() {
     return (
@@ -98,20 +88,18 @@ export class News extends Component {
             </h2>
           )}
 
-          <div className="container d-flex justify-content-between">
-            <div className="row mx-auto">
-              {/* {this.state.loading && <Spinner />} */}
-              <InfiniteScroll
-                dataLength={this.state.totalArticles}
-                next={this.fetchMoreData}
-                hasMore={
-                  this.state.articles.length !== this.state.totalArticles
-                }
-                loader={<Spinner />}
-              >
+          {this.state.loading && <Spinner />}
+          <InfiniteScroll
+            dataLength={this.state.articles.length}
+            next={this.fetchMoreData}
+            hasMore={this.state.articles.length < this.state.totalArticles}
+            loader={<Spinner />}
+          >
+            <div className="container d-flex justify-content-between">
+              <div className="row mx-auto">
                 {this.state.articles.map((element) => {
                   return (
-                    <div className="col-md-3 d-flex justify-content-evenly ">
+                    <div className="col-md-4 d-flex justify-content-evenly my-2 ">
                       <NewsItem
                         title={!element.title ? "" : element.title}
                         imgUrl={element.urlToImage}
@@ -122,31 +110,9 @@ export class News extends Component {
                     </div>
                   );
                 })}
-              </InfiniteScroll>
+              </div>
             </div>
-          </div>
-
-          <div
-            className="d-flex container justify-content-between my-4"
-            id="navigation"
-          >
-            <button
-              disabled={this.state.page <= 1}
-              type="button"
-              class="btn btn-dark"
-              onClick={this.handlePreviousClick}
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              class="btn btn-dark"
-              id="nextBTN"
-              onClick={this.handleNextClick}
-            >
-              Next
-            </button>
-          </div>
+          </InfiniteScroll>
         </div>
       </>
     );
