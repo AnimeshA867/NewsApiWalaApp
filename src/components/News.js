@@ -20,7 +20,7 @@ export class News extends Component {
     super();
 
     this.state = {
-      articles: [],
+      articles: [""],
       loading: false,
       page: 1,
       pageSize: 4,
@@ -44,9 +44,9 @@ export class News extends Component {
   }
   async fetchData(page) {
     try {
-      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=39bd93a959024639b14640804c146c86&page=${page}&category=${this.props.search}&pageSize=${this.state.pageSize}`;
-      // let url =
-      // "https://newsapi.org/v2/everything?q=bitcoin&apiKey=39bd93a959024639b14640804c146c86";
+      // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=39bd93a959024639b14640804c146c86&page=${page}&category=${this.props.search}&pageSize=${this.state.pageSize}`;
+      let url =
+        "https://newsapi.org/v2/everything?q=bitcoin&apiKey=39bd93a959024639b14640804c146c86";
       console.log(url);
       this.setState({ loading: true });
 
@@ -98,33 +98,26 @@ export class News extends Component {
             </h2>
           )}
 
-          {
-            <div className="container d-flex justify-content-between">
-              <div className="row mx-auto">
-                {/* {this.state.loading && <Spinner />} */}
-                <InfiniteScroll
-                  dataLength={this.state.articles}
-                  next={this.fetchData()}
-                  hasMore={true}
-                  loader={<Spinner />}
-                >
-                  {this.state.articles.map((element) => {
-                    return (
-                      <div className="col-md-3 d-flex justify-content-evenly ">
-                        <NewsItem
-                          title={!element.title ? "" : element.title}
-                          imgUrl={element.urlToImage}
-                          url={element.url}
-                          imgAlt={element.description}
-                          description={element.description}
-                        />
-                      </div>
-                    );
-                  })}
-                </InfiniteScroll>
-              </div>
+          <div className="container d-flex justify-content-between">
+            <div className="row mx-auto">
+              {/* {this.state.loading && <Spinner />} */}
+
+              {this.state.articles.map((element) => {
+                return (
+                  <div className="col-md-3 d-flex justify-content-evenly ">
+                    <NewsItem
+                      title={!element.title ? "" : element.title}
+                      imgUrl={element.urlToImage}
+                      url={element.url}
+                      imgAlt={element.description}
+                      description={element.description}
+                    />
+                  </div>
+                );
+              })}
             </div>
-          }
+          </div>
+
           <div
             className="d-flex container justify-content-between my-4"
             id="navigation"

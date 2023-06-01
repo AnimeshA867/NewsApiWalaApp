@@ -7,11 +7,13 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // import bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ErrorPage from "./components/ErrorPage";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       { path: "", element: <News /> },
       { path: "science", element: <News search="science" /> },
