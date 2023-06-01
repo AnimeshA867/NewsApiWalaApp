@@ -101,20 +101,28 @@ export class News extends Component {
           <div className="container d-flex justify-content-between">
             <div className="row mx-auto">
               {/* {this.state.loading && <Spinner />} */}
-
-              {this.state.articles.map((element) => {
-                return (
-                  <div className="col-md-3 d-flex justify-content-evenly ">
-                    <NewsItem
-                      title={!element.title ? "" : element.title}
-                      imgUrl={element.urlToImage}
-                      url={element.url}
-                      imgAlt={element.description}
-                      description={element.description}
-                    />
-                  </div>
-                );
-              })}
+              <InfiniteScroll
+                dataLength={this.state.totalArticles}
+                next={this.fetchMoreData}
+                hasMore={
+                  this.state.articles.length !== this.state.totalArticles
+                }
+                loader={<Spinner />}
+              >
+                {this.state.articles.map((element) => {
+                  return (
+                    <div className="col-md-3 d-flex justify-content-evenly ">
+                      <NewsItem
+                        title={!element.title ? "" : element.title}
+                        imgUrl={element.urlToImage}
+                        url={element.url}
+                        imgAlt={element.description}
+                        description={element.description}
+                      />
+                    </div>
+                  );
+                })}
+              </InfiniteScroll>
             </div>
           </div>
 
