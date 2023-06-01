@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { useEffect } from "react";
+
 import { Link } from "react-router-dom";
 export class NavBar extends Component {
   render() {
     // let search1 = document.getElementById("searchCategory");
-    let val;
+
     // console.log(search1.value);
 
     function handleSearch() {}

@@ -4,12 +4,7 @@ import "./index.css";
 import App from "./App";
 import News from "./components/News";
 import reportWebVitals from "./reportWebVitals";
-import {
-  Outlet,
-  Link,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // import bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -19,11 +14,11 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "", element: <News /> },
-      { path: "science", element: <News search="science" key={"science"} /> },
-      { path: "sports", element: <News search="sports" key={"sports"} /> },
+      { path: "science", element: <News search="science" /> },
+      { path: "sports", element: <News search="sports" /> },
       {
         path: "entertainment",
-        element: <News search="entertainment" key={"entertainment"} />,
+        element: <News search="entertainment" />,
       },
     ],
   },
