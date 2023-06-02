@@ -1,4 +1,3 @@
-````markdown
 # NewsApiWalaApp
 
 Welcome to NewsApiWalaApp! This is a simple application that leverages the News API to fetch and display news articles from various sources.
@@ -12,7 +11,6 @@ To get started with the NewsApiWalaApp, follow these steps:
    ```shell
    git clone https://github.com/AnimeshA867/NewsApiWalaApp.git
    ```
-````
 
 2. Navigate to the project directory:
 
@@ -61,8 +59,3 @@ Contributions to the NewsApiWalaApp are welcome! If you find a bug or have a sug
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
-```
-
-Feel free to modify and customize this `README.md` template according to your specific needs.
-```
