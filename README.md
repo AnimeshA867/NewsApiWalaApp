@@ -1,5 +1,3 @@
-Certainly! Here's an example of a `README.md` file for the "NewsApiWalaApp" repository:
-
 ````markdown
 # NewsApiWalaApp
 
