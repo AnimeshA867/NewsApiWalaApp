@@ -5,7 +5,7 @@ export class spinner extends Component {
     return (
       <div className="text-center position-relative top-50 start-50 translate-middle z-3">
         <img
-          className="m-2"
+          className=""
           src={loader}
           alt="Loading"
           style={{ width: "100px" }}

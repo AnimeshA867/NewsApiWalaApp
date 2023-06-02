@@ -42,18 +42,23 @@ export class News extends Component {
   }
   async fetchData(page) {
     try {
+      this.props.setProgress(10);
+
       let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=037b4d47f210425889376c7f97f11591&page=${page}&category=${this.props.search}&pageSize=${this.state.pageSize}`;
 
       console.log(url);
       this.setState({ loading: true });
 
       let data = await fetch(url);
+      this.props.setProgress(40);
       let parsedData = await data.json();
+      this.props.setProgress(70);
       console.log(parsedData);
       this.setState({
         articles: parsedData.articles,
         totalArticles: parsedData.totalResults,
       });
+      this.props.setProgress(100);
     } finally {
       this.setState({ loading: false });
 
@@ -88,28 +93,29 @@ export class News extends Component {
             </h2>
           )}
 
-          {this.state.loading && <Spinner />}
           <InfiniteScroll
             dataLength={this.state.articles.length}
             next={this.fetchMoreData}
             hasMore={this.state.articles.length < this.state.totalArticles}
             loader={<Spinner />}
           >
+            {this.state.loading && <Spinner />}
             <div className="container d-flex justify-content-between">
               <div className="row mx-auto">
-                {this.state.articles.map((element) => {
-                  return (
-                    <div className="col-md-4 d-flex justify-content-evenly my-2 ">
-                      <NewsItem
-                        title={!element.title ? "" : element.title}
-                        imgUrl={element.urlToImage}
-                        url={element.url}
-                        imgAlt={element.description}
-                        description={element.description}
-                      />
-                    </div>
-                  );
-                })}
+                {!this.state.loading &&
+                  this.state.articles.map((element) => {
+                    return (
+                      <div className="col-md-4 d-flex justify-content-evenly my-2 ">
+                        <NewsItem
+                          title={!element.title ? "" : element.title}
+                          imgUrl={element.urlToImage}
+                          url={element.url}
+                          imgAlt={element.description}
+                          description={element.description}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </InfiniteScroll>
