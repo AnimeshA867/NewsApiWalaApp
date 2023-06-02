@@ -9,7 +9,7 @@ import LoadingBar from "react-top-loading-bar";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 export default class App extends Component {
   c = "John";
-
+  apiKey = process.env.REACT_APP_NEWS_API;
   constructor() {
     super();
 
@@ -17,6 +17,7 @@ export default class App extends Component {
       progress: 0,
     };
     this.root = this.root.bind(this);
+    console.log(this.apiKey);
   }
   setProgress = (progress) => {
     this.setState({ progress: progress });
@@ -41,19 +42,40 @@ export default class App extends Component {
         element: this.root(),
         errorElement: <ErrorPage />,
         children: [
-          { path: "", element: <News setProgress={this.setProgress} /> },
+          {
+            path: "",
+            element: (
+              <News apikey={this.apiKey} setProgress={this.setProgress} />
+            ),
+          },
           {
             path: "science",
-            element: <News setProgress={this.setProgress} search="science" />,
+            element: (
+              <News
+                apikey={this.apiKey}
+                setProgress={this.setProgress}
+                search="science"
+              />
+            ),
           },
           {
             path: "sports",
-            element: <News setProgress={this.setProgress} search="sports" />,
+            element: (
+              <News
+                apikey={this.apiKey}
+                setProgress={this.setProgress}
+                search="sports"
+              />
+            ),
           },
           {
             path: "entertainment",
             element: (
-              <News setProgress={this.setProgress} search="entertainment" />
+              <News
+                apikey={this.apiKey}
+                setProgress={this.setProgress}
+                search="entertainment"
+              />
             ),
           },
         ],
