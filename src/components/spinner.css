@@ -1,0 +1,29 @@
+#loading-bar-spinner.spinner {
+  position: absolute;
+  z-index: 19 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+  width: 100vw;
+}
+
+#loading-bar-spinner.spinner .spinner-icon {
+  width: 40px;
+  height: 40px;
+  border: solid 4px transparent;
+  border-top-color: #00c8b1 !important;
+  border-left-color: #00c8b1 !important;
+  border-radius: 50%;
+}
+
+@keyframes loading-bar-spinner {
+  0% {
+    transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

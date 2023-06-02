@@ -78,10 +78,11 @@ export class News extends Component {
     console.log(parsedData + "from fetchMoer Data");
     this.setState({
       articles: this.state.articles.concat(parsedData.articles),
-
+      remainingArticles: this.state.totalArticles - this.state.articles.length,
       page: this.state.page + 1,
     });
     console.log(this.state.articles.length);
+    console.log(this.state.articles);
   };
   render() {
     return (
@@ -96,7 +97,10 @@ export class News extends Component {
           <InfiniteScroll
             dataLength={this.state.articles.length}
             next={this.fetchMoreData}
-            hasMore={this.state.articles.length < this.state.totalArticles}
+            hasMore={
+              this.state.remainingArticles !== 0
+              // this.state.articles.length <= this.state.totalArticles
+            }
             loader={<Spinner />}
           >
             {this.state.loading && <Spinner />}

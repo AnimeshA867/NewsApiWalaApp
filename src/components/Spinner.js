@@ -1,16 +1,13 @@
 import React, { Component } from "react";
-import loader from "./loader.gif";
+import "./spinner.css";
 export class spinner extends Component {
   render() {
     return (
-      <div className="text-center position-relative top-50 start-50 translate-middle z-3">
-        <img
-          className=""
-          src={loader}
-          alt="Loading"
-          style={{ width: "100px" }}
-        />
-      </div>
+      <>
+        <div id="loading-bar-spinner" class="spinner">
+          <div class="spinner-icon"></div>
+        </div>
+      </>
     );
   }
 }
