@@ -11,6 +11,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export default function App() {
   const apiKey = process.env.REACT_APP_NEWS_API;
+  console.log(apiKey);
   const [progress, setProgress] = useState(0);
   let root = () => {
     return (

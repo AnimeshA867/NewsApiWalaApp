@@ -12,6 +12,7 @@ let News = (props) => {
   const [totalArticles, setTotalArticles] = useState(0);
   const [remainingArticles, setRemainingArticles] = useState(1);
   let pageSize = 15;
+
   let fetchData = async () => {
     try {
       props.setProgress(10);
@@ -70,6 +71,7 @@ let News = (props) => {
     setArticles(articles.concat(parsedData.articles));
     setRemainingArticles(totalArticles - articles.length);
     setPage(page + 1);
+    console.log(articles);
   };
   return (
     <>
