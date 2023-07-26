@@ -10,8 +10,8 @@ import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export default function App() {
-  const apiKey = process.env.REACT_APP_NEWS_API;
-  console.log(apiKey);
+  const apiKey = process.env.REACT_APP_NEWS_API_1;
+  console.log(process.env);
   const [progress, setProgress] = useState(0);
   let root = () => {
     return (

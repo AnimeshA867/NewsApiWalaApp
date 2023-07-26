@@ -71,7 +71,7 @@ let News = (props) => {
     setArticles(articles.concat(parsedData.articles));
     setRemainingArticles(totalArticles - articles.length);
     setPage(page + 1);
-    console.log(articles);
+    console.log(articles.length);
   };
   return (
     <>
